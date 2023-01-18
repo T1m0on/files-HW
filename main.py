@@ -1,16 +1,25 @@
-# This is a sample Python script.
+import os
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+texts_folder = 'texts'
+sorted_files_dict = {}
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def get_lines():
+    files_dict = {}
+    for file_name in os.listdir('texts'):
+        with open(os.path.join(texts_folder, file_name), encoding='utf-8') as f:
+            files_dict[file_name] = len(f.readlines())
+    for i in sorted(files_dict, key=files_dict.get):
+        sorted_files_dict[i] = files_dict[i]
+    return sorted_files_dict
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+def get_res():
+    get_lines()
+    with open('res.txt', 'w', encoding='utf-8') as res:
+        for k, v in sorted_files_dict.items():
+            with open(os.path.join(texts_folder, k), encoding='utf-8') as f:
+                res.write(f'{k}\n{v}\n{"".join(f.readlines())}\n')
+
+
+get_res()
